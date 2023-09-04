@@ -2,7 +2,7 @@ import { IsNotEmpty, MinLength } from "class-validator"
 export class PostDto{
     @IsNotEmpty()
     @MinLength(4)
-   readonly titles: string
+   readonly title: string
 
    @IsNotEmpty()
     readonly body: string
