@@ -17,21 +17,22 @@ export class PostsService {
   async findAll(): Promise<Post[]> {
     return await this.postRepository.findAll<Post>({
       include: [{ model: User, attributes: { exclude: ['password'] } }],
-    order:[["id","DESC"]]});
+      order: [['id', 'DESC']],
+    });
   }
 
-  async findOne(id): Promise<Post> {
+  async findOne(id: number): Promise<Post> {
     return await this.postRepository.findOne({
       where: { id },
       include: [{ model: User, attributes: { exclude: ['password'] } }],
     });
   }
 
-  async delete(id, userId) {
+  async delete(id: number, userId: number) {
     return await this.postRepository.destroy({ where: { id, userId } });
   }
 
-  async update(id, data, userId) {
+  async update(id: number, data: PostDto, userId: number) {
     const [numberOfAffectedRows, [updatedPost]] =
       await this.postRepository.update(
         { ...data },
