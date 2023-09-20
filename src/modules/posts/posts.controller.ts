@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { PostsService } from './posts.service';
 import { Post as PostEntity } from './post.entity';
 import { PostDto } from './dto/post.dto';
+import { JwtAuthGuard } from 'src/core/guards/jwt-ayth.guard';
 
 @Controller('posts')
 export class PostsController {
@@ -24,13 +25,13 @@ export class PostsController {
         return post;
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Body() post: PostDto, @Request() req): Promise<PostEntity> {
         return await this.postService.create(post, req.user.id);
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(JwtAuthGuard)
     @Put(':id')
     async update(@Param('id') id: number, @Body() post: PostDto, @Request() req): Promise<PostEntity> {
         const { numberOfAffectedRows, updatedPost } = await this.postService.update(id, post, req.user.id);
@@ -42,7 +43,7 @@ export class PostsController {
         return updatedPost;
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async remove(@Param('id') id: number, @Request() req) {
         const deleted = await this.postService.delete(id, req.user.id);
